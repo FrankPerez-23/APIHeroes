@@ -57,9 +57,11 @@ class DatosHeroActivity : AppCompatActivity() {
         if (datosHeroe?.biography?.alignment == "good"){
             tvBando.text = "Bando: Héroe"
             tvBando.setTextColor(Color.parseColor("#4CAF50"))
-        }else{
+        }else if ((datosHeroe?.biography?.alignment == "bad")){
             tvBando.text = "Bando: Villano"
             tvBando.setTextColor(Color.parseColor("#F44336"))
+        }else{
+            tvBando.text = "Bando: Neutral"
         }
 
         val poderTotal = (datosHeroe?.powerstats?.power ?: 0) + (datosHeroe?.powerstats?.combat ?: 0)
