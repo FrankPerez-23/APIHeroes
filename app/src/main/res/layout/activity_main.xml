@@ -8,41 +8,25 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/dogImageView"
+    <android.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="Buscar héroe por nombre..."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvHeroes"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        android:contentDescription="Imagen de un perro aleatorio"
-        android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/backgrounds/scenic" />
-
-    <TextView
-        android:id="@+id/tvRaza"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dogImageView" />
-
-
-    <Button
-        android:id="@+id/fetchDogButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Obtener nuevo perro"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dogImageView" />
+        app:layout_constraintTop_toBottomOf="@id/searchView" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
