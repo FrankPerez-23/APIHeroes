@@ -29,19 +29,15 @@ class MainActivity : AppCompatActivity() {
         val searchView = findViewById<SearchView>(R.id.searchView)
         val rvHeroes = findViewById<RecyclerView>(R.id.rvHeroes)
         val adapter = SimpleHeroAdapter { heroeSeleccionado ->
-            // Crea el Intent para abrir la nueva pantalla
             val intent = Intent(this, DatosHeroActivity::class.java).apply {
-                // Pasa los datos que necesitarás en la otra ventana
                 putExtra("EXTRA_HERO", heroeSeleccionado)
             }
             startActivity(intent)
         }
 
-        // Cuadrícula de 3 columnas automáticas con scroll:
         rvHeroes.layoutManager = GridLayoutManager(this, 3)
         rvHeroes.adapter = adapter
 
-        // Observa la lista completa que entrega getAll()
         heroViewModel.Allheroes.observe(this) { heroes ->
             if (heroes != null) {
                 listaOriginalHeroes = heroes
@@ -49,21 +45,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Se encarga de avisar cuando el usuario interactue con el buscador
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
-            }
+            } // Se encarga de realizar una accion cuando el usuario presiona la lupa del buscador o presiona enter, pero en este caso como lo hacemos en tiempo real no es necesario q el usuario presione enter para buscar por lo q retorna falso para no ejecutar nada
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                val texto = newText.orEmpty().lowercase().trim()
+            override fun onQueryTextChange(newText: String?): Boolean { // Se encarga de que con cada letra presionada del teclado se actualiza el buscador y el newText es el String q esta en el buscador en esa ultima actualizacion
+                val texto = newText.orEmpty().lowercase().trim() // Se encarga de modificar el string para evitar errores
+                // orEmpty() se encarga de tranformar en String vacio ("") si es que la variable esta vacia
+                // lowercase() se encarga de convertir en minuscula toda la cadena de Texto
+                // trim() se encarga de quitar el espacio del comienzo y final de la cadena de texto
 
-                // Filtramos sobre la lista original comparando con 'name'
                 val listaFiltrada = if (texto.isEmpty()) {
-                    listaOriginalHeroes
-                } else {
+                    listaOriginalHeroes // con una condicion se verifica que la variable texto este vacia, si es asi entonces toda la lista de heroes se guardará en listaFiltrada
+                } else { // Caso contrario
                     listaOriginalHeroes.filter { heroe ->
-                        heroe.name?.lowercase()?.contains(texto) == true
-                    }
+                        heroe.name?.contains(texto, ignoreCase = true) ?: false
+                    } // Texto no esta vacio entonces usamos filter para buscar todos los heroes que tengan la cadena de texto de la variable texto dentro de su nombre, con contains se hace la comparacion de texto con los nombres de los heroes y  con ignoreCase = true hacemos que el sistema ignore las mayusculas y minusculas de la cadena de texto, luego con ?: hacemos que si el resultado es null nos devuelva false, esto porq filter necesita de un valor boolean
                 }
 
                 // Informamos al adaptador para que actualice las tarjetas visibles
@@ -72,7 +72,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        // Llamar a la API al abrir la pantalla
         heroViewModel.obtenerTodosHeroes()
     }
 
